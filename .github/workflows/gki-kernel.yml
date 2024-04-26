@@ -1,0 +1,121 @@
+name: Build Kernel - Android 13
+on:
+  workflow_dispatch
+jobs:
+  build:
+    name: Build ${{ inputs.version_name }}
+    runs-on: ubuntu-latest
+    env:
+      CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
+      CCACHE_NOHASHDIR: "true"
+      CCACHE_HARDLINK: "true"
+    steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 8192
+          temp-reserve-mb: 2048
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+      - name: Setup kernel source
+        run: |
+          echo "Free space:"
+          df -h
+          cd $GITHUB_WORKSPACE
+          sudo apt-get install repo -y
+          mkdir android-kernel && cd android-kernel
+          repo init --depth=1 --u https://android.googlesource.com/kernel/manifest -b common-${{ inputs.tag }} --repo-rev=v2.16
+          REMOTE_BRANCH=$(git ls-remote https://android.googlesource.com/kernel/common ${{ inputs.tag }})
+          DEFAULT_MANIFEST_PATH=.repo/manifests/default.xml
+          if grep -q deprecated <<< $REMOTE_BRANCH; then
+            echo "Found deprecated branch: ${{ inputs.tag }}"
+            sed -i 's/"${{ inputs.tag }}"/"deprecated\/${{ inputs.tag }}"/g' $DEFAULT_MANIFEST_PATH
+            cat $DEFAULT_MANIFEST_PATH
+          fi
+          repo --version
+          repo --trace sync -c -j$(nproc --all) --no-tags
+          df -h
+      - name: Setup LXC
+        run: |
+          cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+          rm -rf utils
+          git clone https://github.com/tomxi1997/lxc-docker-support-for-android.git utils
+          echo 'source "utils/Kconfig"' >> "Kconfig"
+
+          echo "CONFIG_DOCKER=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+
+          sed -i '/CONFIG_ANDROID_PARANOID_NETWORK/d' arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+          echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+          
+          #sed -i '/CONFIG_LOCALVERSION/d' arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+          #echo 'CONFIG_LOCALVERSION="-LXC-KernelSU-support_Pdx"' >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+          
+          chmod +x $GITHUB_WORKSPACE/kernel_workspace/android-kernel/utils/runcpatch.sh
+          if [ -f $GITHUB_WORKSPACE/kernel_workspace/android-kernel/kernel/cgroup/cgroup.c ]; then
+             sh $GITHUB_WORKSPACE/kernel_workspace/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/kernel_workspace/android-kernel/kernel/cgroup/cgroup.c
+          fi
+        
+          if [ -f $GITHUB_WORKSPACE/kernel_workspace/android-kernel/kernel/cgroup.c ]; then
+             sh $GITHUB_WORKSPACE/kernel_workspace/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/kernel_workspace/android-kernel/kernel/cgroup.c
+          fi
+          
+          if [ -f $GITHUB_WORKSPACE/kernel_workspace/android-kernel/net/netfilter/xt_qtaguid.c ]; then
+             patch -p0 < $GITHUB_WORKSPACE/kernel_workspace/android-kernel/utils/xt_qtaguid.patch
+          fi
+      - name: Setup ccache
+        if: inputs.use_cache == true
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: gki-kernel-aarch64-${{ inputs.version_name }}
+          max-size: 2G
+          save: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}     
+          
+      - name: Build Kernel/LKM
+        working-directory: android-kernel
+        run: |
+          if [ -e build/build.sh ]; then
+            LTO=thin BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC="/usr/bin/ccache clang"
+          else
+            tools/bazel run --disk_cache=/home/runner/.cache/bazel --config=fast --config=stamp --lto=thin //common:kernel_aarch64_dist -- --dist_dir=dist
+          fi
+      - name: Prepare artifacts
+        id: prepareArtifacts
+        run: |
+          OUTDIR=android-kernel/out/${{ inputs.version }}/dist
+          if [ ! -e $OUTDIR ]; then
+            OUTDIR=android-kernel/dist
+          fi
+          mkdir output
+          if [ "${{ inputs.build_lkm}}" = "true" ]; then 
+            llvm-strip-15 -d $OUTDIR/kernelsu.ko
+            mv $OUTDIR/kernelsu.ko ./output/${{ inputs.version }}_kernelsu.ko
+          else
+            cp $OUTDIR/Image ./output/
+            cp $OUTDIR/Image.lz4 ./output/
+            git clone https://github.com/Kernel-SU/AnyKernel3
+            rm -rf ./AnyKernel3/.git
+            cp $OUTDIR/Image ./AnyKernel3/
+          fi
+
+      - name: Upload Image and Image.gz
+        uses: actions/upload-artifact@v4
+        if: ${{ inputs.build_lkm == false }}
+        with:
+          name: Image-${{ inputs.version_name }}_${{ inputs.os_patch_level }}
+          path: ./output/*
+
+      - name: Upload AnyKernel3
+        if: ${{ inputs.build_lkm == false }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: AnyKernel3-${{ inputs.version_name }}_${{ inputs.os_patch_level }}
+          path: ./AnyKernel3/*
+
+      - name: Upload LKM
+        uses: actions/upload-artifact@v4
+        if: ${{ inputs.build_lkm == true }}
+        with:
+          name: ${{ inputs.version }}-lkm
+          path: ./output/*_kernelsu.ko          
