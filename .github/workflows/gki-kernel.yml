@@ -102,6 +102,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/android-kernel
           rm -rf utils
+          wget https://github.com/Nyarlathote/liby/raw/master/build.sh
           git clone https://github.com/tomxi1997/lxc-docker-support-for-android.git utils
           echo 'source "utils/Kconfig"' >> "Kconfig"
 
@@ -127,7 +128,7 @@ jobs:
           fi
 
           if [ -f common/arch/arm64/configs/gki_defconfig ]; then
-             cp .github/scripts/build.sh $GITHUB_WORKSPACE/android-kernel/build/build.sh
+             cp $GITHUB_WORKSPACE/android-kernel/build.sh $GITHUB_WORKSPACE/android-kernel/build/build.sh
           fi
           
       - name: Setup ccache
