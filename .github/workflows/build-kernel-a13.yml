@@ -6,6 +6,7 @@ on:
       - ".github/workflows/build-kernel-a13.yml"
       - ".github/workflows/gki-kernel.yml"
       - ".github/scripts/build_a13.sh"
+      - ".github/scripts/build.sh"
       - "kernel/**"
   pull_request:
     branches: ["master"]
@@ -13,6 +14,7 @@ on:
       - ".github/workflows/build-kernel-a13.yml"
       - ".github/workflows/gki-kernel.yml"
       - ".github/scripts/build-a13.sh"
+      - ".github/scripts/build.sh"
       - "kernel/**"
   workflow_call:
 jobs:
