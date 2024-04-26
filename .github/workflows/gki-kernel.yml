@@ -125,6 +125,10 @@ jobs:
           if [ -f $GITHUB_WORKSPACE/android-kernel/net/netfilter/xt_qtaguid.c ]; then
              patch -p0 < $GITHUB_WORKSPACE/android-kernel/utils/xt_qtaguid.patch
           fi
+
+          if [ -f common/arch/arm64/configs/gki_defconfig ]; then
+             cp common/arch/arm64/configs/gki_defconfig $GITHUB_WORKSPACE/android-kernel/out/android13-5.15/common/defconfig
+          fi
           
       - name: Setup ccache
         if: inputs.use_cache == true
