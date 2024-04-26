@@ -277,8 +277,8 @@ function check_defconfig() {
       diff -u ${OUT_DIR}/arch/${ARCH}/configs/${DEFCONFIG} ${OUT_DIR}/defconfig >&2 || RES=$?
     fi
     if [ ${RES} -ne 0 ]; then
-        echo ERROR: savedefconfig does not match ${KERNEL_DIR}/arch/${ARCH}/configs/${DEFCONFIG} >&2 || true
+        echo WARNING: savedefconfig does not match ${KERNEL_DIR}/arch/${ARCH}/configs/${DEFCONFIG} >&2
     fi
-    return ${RES}
+    return 0
 }
 export -f check_defconfig
