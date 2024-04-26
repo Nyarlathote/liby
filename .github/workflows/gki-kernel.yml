@@ -105,19 +105,19 @@ jobs:
           git clone https://github.com/tomxi1997/lxc-docker-support-for-android.git utils
           echo 'source "utils/Kconfig"' >> "Kconfig"
 
-          echo "CONFIG_DOCKER=y" >> arch/arm64/configs/gki_defconfig
+          echo "CONFIG_DOCKER=y" >> echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/gki_defconfig
 
-          sed -i '/CONFIG_ANDROID_PARANOID_NETWORK/d' arch/arm64/configs/gki_defconfig
-          echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> arch/arm64/configs/gki_defconfig
+          sed -i '/CONFIG_ANDROID_PARANOID_NETWORK/d' common/arch/arm64/configs/gki_defconfig
+          echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/gki_defconfig
           
-          #sed -i '/CONFIG_LOCALVERSION/d' arch/arm64/configs/gki_defconfig
-          #echo 'CONFIG_LOCALVERSION="-LXC-KernelSU-support_Pdx"' >> arch/arm64/configs/gki_defconfig
+          #sed -i '/CONFIG_LOCALVERSION/d' common/arch/arm64/configs/gki_defconfig
+          #echo 'CONFIG_LOCALVERSION="-LXC-KernelSU-support_Pdx"' >> common/arch/arm64/configs/gki_defconfig
           
           chmod +x $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh
           if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c ]; then
              sh $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c
           fi
-        
+      
           if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup.c ]; then
              sh $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/android-kernel/kernel/cgroup.c
           fi
