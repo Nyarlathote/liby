@@ -127,7 +127,7 @@ jobs:
           fi
 
           if [ -f common/arch/arm64/configs/gki_defconfig ]; then
-             cp common/arch/arm64/configs/gki_defconfig $GITHUB_WORKSPACE/android-kernel/out/android13-5.15/common/defconfig
+             cp /home/runner/work/liby/build.sh /home/runner/work/liby/liby/android-kernel/build/build.sh
           fi
           
       - name: Setup ccache
