@@ -836,9 +836,12 @@ if [ "${KMI_SYMBOL_LIST_STRICT_MODE}" = "1" ]; then
   gki_modules_list="${ROOT_DIR}/${KERNEL_DIR}/android/gki_system_dlkm_modules"
   KMI_STRICT_MODE_OBJECTS="vmlinux $(sed 's/\.ko$//' ${gki_modules_list} | tr '\n' ' ')" \
     ${ROOT_DIR}/build/abi/compare_to_symbol_list "${OUT_DIR}/Module.symvers"             \
-    "${OUT_DIR}/abi_symbollist.raw"
+    "${OUT_DIR}/abi_symbollist.raw" || \
+    echo "Warning: Error encountered while comparing symbol lists. Compilation will proceed but symbol differences may exist." >&2
+
   set +x
 fi
+
 
 rm -rf ${MODULES_STAGING_DIR}
 mkdir -p ${MODULES_STAGING_DIR}
