@@ -142,6 +142,8 @@ jobs:
       - name: Build Kernel/LKM
         working-directory: android-kernel
         run: |
+          apt-get install lld
+          ln -s /usr/bin/ld.lld /usr/bin/ld
           cd common
           make LLVM=1 DEPMOD=depmod DTC=/home/runner/work/liby/liby/android-kernel/build/kernel/build-tools/path/linux-x86/dtc O=/home/runner/work/liby/liby/android-kernel/out/android13-5.15/common 'CC=/usr/bin/ccache clang' gki_defconfig
           
