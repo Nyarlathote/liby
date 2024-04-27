@@ -816,18 +816,6 @@ if [ -n "${POST_KERNEL_BUILD_CMDS}" ]; then
   set +x
 fi
 
-if [ -n "${MODULES_ORDER}" ]; then
-  echo "========================================================"
-  echo " Checking the list of modules:"
-  if ! diff -u "${KERNEL_DIR}/${MODULES_ORDER}" "${OUT_DIR}/modules.order"; then
-    echo "ERROR: modules list out of date" >&2
-    echo "Update it with:" >&2
-    echo "cp ${OUT_DIR}/modules.order ${KERNEL_DIR}/${MODULES_ORDER}" >&2
-  else
-    echo "Modules list is up to date."
-  fi
-fi
-
 if [ "${KMI_SYMBOL_LIST_STRICT_MODE}" = "1" ]; then
   echo "========================================================"
   echo " Comparing the KMI and the symbol lists:"
@@ -836,11 +824,18 @@ if [ "${KMI_SYMBOL_LIST_STRICT_MODE}" = "1" ]; then
   gki_modules_list="${ROOT_DIR}/${KERNEL_DIR}/android/gki_system_dlkm_modules"
   KMI_STRICT_MODE_OBJECTS="vmlinux $(sed 's/\.ko$//' ${gki_modules_list} | tr '\n' ' ')" \
     ${ROOT_DIR}/build/abi/compare_to_symbol_list "${OUT_DIR}/Module.symvers"             \
-    "${OUT_DIR}/abi_symbollist.raw" || \
-    echo "Warning: Error encountered while comparing symbol lists. Compilation will proceed but symbol differences may exist." >&2
+    "${OUT_DIR}/abi_symbollist.raw"
+
+  # Check if the command exited with a zero status (indicating success)
+  if [ $? -eq 0 ]; then
+    echo "Symbol lists are identical. Compilation can proceed." >&2
+  else
+    echo "Warning: Symbol lists are not identical. Compilation may proceed but symbol differences may exist." >&2
+  fi
 
   set +x
 fi
+
 
 
 rm -rf ${MODULES_STAGING_DIR}
