@@ -150,7 +150,7 @@ jobs:
           cd /home/runner/work/liby/liby/android-kernel/out/android13-5.15/common
           make O=/home/runner/work/liby/liby/android-kernel/out/android13-5.15/common LLVM=1 DEPMOD=depmod DTC=/home/runner/work/liby/liby/android-kernel/build/kernel/build-tools/path/linux-x86/dtc 'CC=/usr/bin/ccache clang' Image modules Image.lz4 Image.gz 
           cd /home/runner/work/liby/liby/android-kernel/out/android13-5.15/common
-          make
+          make Image modules Image.lz4 Image.gz
 
       - name: Prepare artifacts
         id: prepareArtifacts
