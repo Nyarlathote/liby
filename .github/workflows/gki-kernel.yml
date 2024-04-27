@@ -101,16 +101,16 @@ jobs:
       - name: Setup Configuration for Kernel
         run: |
           cd $GITHUB_WORKSPACE/android-kernel
-            echo "CONFIG_MODULES=y" >> common/arch/arm64/configs/gki_defconfig
-            echo "CONFIG_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
-            echo "CONFIG_HAVE_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
-            echo "CONFIG_KPROBE_EVENTS=y" >> common/arch/arm64/configs/gki_defconfig
-            echo "CONFIG_OVERLAY_FS=y" >> common/arch/arm64/configs/gki_defconfig
-            sed -i 's/CONFIG_LTO=y/CONFIG_LTO=n/' common/arch/arm64/configs/gki_defconfig
-            sed -i 's/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/' common/arch/arm64/configs/gki_defconfig
-            sed -i 's/CONFIG_THINLTO=y/CONFIG_THINLTO=n/' common/arch/arm64/configs/gki_defconfig
-            echo "CONFIG_LTO_NONE=y" >> common/arch/arm64/configs/gki_defconfig
-            echo "CONFIG_CC_WERROR=n" >> common/arch/arm64/configs/gki_defconfig
+            echo "CONFIG_MODULES=y" >> common/arch/arm64/configs/defconfig
+            echo "CONFIG_KPROBES=y" >> common/arch/arm64/configs/defconfig
+            echo "CONFIG_HAVE_KPROBES=y" >> common/arch/arm64/configs/defconfig
+            echo "CONFIG_KPROBE_EVENTS=y" >> common/arch/arm64/configs/defconfig
+            echo "CONFIG_OVERLAY_FS=y" >> common/arch/arm64/configs/defconfig
+            sed -i 's/CONFIG_LTO=y/CONFIG_LTO=n/' common/arch/arm64/configs/defconfig
+            sed -i 's/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/' common/arch/arm64/configs/defconfig
+            sed -i 's/CONFIG_THINLTO=y/CONFIG_THINLTO=n/' common/arch/arm64/configs/defconfig
+            echo "CONFIG_LTO_NONE=y" >> common/arch/arm64/configs/defconfig
+            echo "CONFIG_CC_WERROR=n" >> common/arch/arm64/configs/defconfig
 
                   
       - name: Setup LXC
@@ -121,13 +121,13 @@ jobs:
           git clone https://github.com/tomxi1997/lxc-docker-support-for-android.git utils
           echo 'source "utils/Kconfig"' >> "Kconfig"
 
-          echo "CONFIG_DOCKER=y" >> echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_DOCKER=y" >> echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/defconfig
 
-          sed -i '/CONFIG_ANDROID_PARANOID_NETWORK/d' common/arch/arm64/configs/gki_defconfig
-          echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/gki_defconfig
+          sed -i '/CONFIG_ANDROID_PARANOID_NETWORK/d' common/arch/arm64/configs/defconfig
+          echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/defconfig
           
-          #sed -i '/CONFIG_LOCALVERSION/d' common/arch/arm64/configs/gki_defconfig
-          #echo 'CONFIG_LOCALVERSION="-LXC-KernelSU-support_Pdx"' >> common/arch/arm64/configs/gki_defconfig
+          #sed -i '/CONFIG_LOCALVERSION/d' common/arch/arm64/configs/defconfig
+          #echo 'CONFIG_LOCALVERSION="-LXC-KernelSU-support_Pdx"' >> common/arch/arm64/configs/defconfig
           
           chmod +x $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh
           if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c ]; then
@@ -142,7 +142,7 @@ jobs:
              patch -p0 < $GITHUB_WORKSPACE/android-kernel/utils/xt_qtaguid.patch
           fi
 
-          if [ -f common/arch/arm64/configs/gki_defconfig ]; then
+          if [ -f common/arch/arm64/configs/defconfig ]; then
              cp $GITHUB_WORKSPACE/android-kernel/_setup_env.sh $GITHUB_WORKSPACE/android-kernel/build/_setup_env.sh
           fi
           
@@ -158,7 +158,7 @@ jobs:
         working-directory: android-kernel
         run: |
           if [ -e build/build.sh ]; then
-          LTO=thin BUILD_CONFIG=common/build.config.gki.aarch64 build/build_abi.sh --update --print-report CC="/usr/bin/ccache clang"
+          LTO=thin BUILD_CONFIG=common/build.config.aarch64 build/build.sh CC="/usr/bin/ccache clang"
           else
           tools/bazel run --disk_cache=/home/runner/.cache/bazel --config=fast --config=stamp --lto=thin //common:kernel_aarch64_dist -- --dist_dir=dist
           fi          
