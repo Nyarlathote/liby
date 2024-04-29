@@ -121,32 +121,32 @@ jobs:
                   
       - name: Setup LXC
         run: |
-         cd $GITHUB_WORKSPACE/android-kernel
-          rm -rf utils
-          wget https://github.com/Nyarlathote/liby/raw/master/_setup_env.sh
-          git clone https://github.com/tomxi1997/lxc-docker-support-for-android.git utils
-          echo 'source "utils/Kconfig"' >> "Kconfig"
+#         cd $GITHUB_WORKSPACE/android-kernel
+#          rm -rf utils
+#          wget https://github.com/Nyarlathote/liby/raw/master/_setup_env.sh
+#          git clone https://github.com/tomxi1997/lxc-docker-support-for-android.git utils
+#          echo 'source "utils/Kconfig"' >> "Kconfig"
 
-          echo "CONFIG_DOCKER=y" >> echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/gki_defconfig
+#          echo "CONFIG_DOCKER=y" >> echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/gki_defconfig
 
-          sed -i '/CONFIG_ANDROID_PARANOID_NETWORK/d' common/arch/arm64/configs/gki_defconfig
-          echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/gki_defconfig
+#          sed -i '/CONFIG_ANDROID_PARANOID_NETWORK/d' common/arch/arm64/configs/gki_defconfig
+#          echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/gki_defconfig
           
-          #sed -i '/CONFIG_LOCALVERSION/d' common/arch/arm64/configs/gki_defconfig
-          #echo 'CONFIG_LOCALVERSION="-LXC-KernelSU-support_Pdx"' >> common/arch/arm64/configs/gki_defconfig
+#          #sed -i '/CONFIG_LOCALVERSION/d' common/arch/arm64/configs/gki_defconfig
+#          #echo 'CONFIG_LOCALVERSION="-LXC-KernelSU-support_Pdx"' >> common/arch/arm64/configs/gki_defconfig
           
-          chmod +x $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh
-          if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c ]; then
-             sh $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c
-          fi
+#          chmod +x $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh
+#          if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c ]; then
+#             sh $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c
+#          fi
       
-          if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup.c ]; then
-             sh $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/android-kernel/kernel/cgroup.c
-          fi
+#          if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup.c ]; then
+#             sh $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/android-kernel/kernel/cgroup.c
+#          fi
           
-          if [ -f $GITHUB_WORKSPACE/android-kernel/net/netfilter/xt_qtaguid.c ]; then
-             patch -p0 < $GITHUB_WORKSPACE/android-kernel/utils/xt_qtaguid.patch
-          fi
+#          if [ -f $GITHUB_WORKSPACE/android-kernel/net/netfilter/xt_qtaguid.c ]; then
+#             patch -p0 < $GITHUB_WORKSPACE/android-kernel/utils/xt_qtaguid.patch
+#          fi
 
 #          if [ -f common/arch/arm64/configs/gki_defconfig ]; then
 #             cp $GITHUB_WORKSPACE/android-kernel/_setup_env.sh $GITHUB_WORKSPACE/android-kernel/build/_setup_env.sh
