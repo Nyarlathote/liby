@@ -740,8 +740,8 @@ ABI_PROP=${DIST_DIR}/abi.prop
 
 #  if [ "${KMI_ENFORCED}" = "1" ]; then
 #    echo "KMI_ENFORCED=1" >> ${ABI_PROP}
- # fi
-fi
+#  fi
+#fi
 
 #if [ -n "${KMI_SYMBOL_LIST}" ]; then
 #  ABI_SL=${DIST_DIR}/abi_symbollist
