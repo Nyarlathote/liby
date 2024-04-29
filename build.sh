@@ -731,21 +731,21 @@ fi
 ABI_PROP=${DIST_DIR}/abi.prop
 : > ${ABI_PROP}
 
-if [ -n "${ABI_DEFINITION}" ]; then
+#if [ -n "${ABI_DEFINITION}" ]; then
 
-  ABI_XML=${DIST_DIR}/abi.xml
+#  ABI_XML=${DIST_DIR}/abi.xml
 
-  echo "KMI_DEFINITION=abi.xml" >> ${ABI_PROP}
-  echo "KMI_MONITORED=1"        >> ${ABI_PROP}
+#  echo "KMI_DEFINITION=abi.xml" >> ${ABI_PROP}
+#  echo "KMI_MONITORED=1"        >> ${ABI_PROP}
 
-  if [ "${KMI_ENFORCED}" = "1" ]; then
-    echo "KMI_ENFORCED=1" >> ${ABI_PROP}
-  fi
+#  if [ "${KMI_ENFORCED}" = "1" ]; then
+#    echo "KMI_ENFORCED=1" >> ${ABI_PROP}
+ # fi
 fi
 
-if [ -n "${KMI_SYMBOL_LIST}" ]; then
-  ABI_SL=${DIST_DIR}/abi_symbollist
-  echo "KMI_SYMBOL_LIST=abi_symbollist" >> ${ABI_PROP}
+#if [ -n "${KMI_SYMBOL_LIST}" ]; then
+#  ABI_SL=${DIST_DIR}/abi_symbollist
+#  echo "KMI_SYMBOL_LIST=abi_symbollist" >> ${ABI_PROP}
 fi
 
 # define the kernel binary and modules archive in the $ABI_PROP
@@ -755,43 +755,43 @@ if [ "${COMPRESS_UNSTRIPPED_MODULES}" = "1" ]; then
 fi
 
 # Copy the abi_${arch}.xml file from the sources into the dist dir
-if [ -n "${ABI_DEFINITION}" ]; then
+#if [ -n "${ABI_DEFINITION}" ]; then
   echo "========================================================"
-  echo " Copying abi definition to ${ABI_XML}"
-  pushd $ROOT_DIR/$KERNEL_DIR
-    cp "${ABI_DEFINITION}" ${ABI_XML}
-  popd
-fi
+#  echo " Copying abi definition to ${ABI_XML}"
+#  pushd $ROOT_DIR/$KERNEL_DIR
+#    cp "${ABI_DEFINITION}" ${ABI_XML}
+#  popd
+#fi
 
 # Copy the abi symbol list file from the sources into the dist dir
-if [ -n "${KMI_SYMBOL_LIST}" ]; then
-  ${ROOT_DIR}/build/abi/process_symbols --out-dir="$DIST_DIR" --out-file=abi_symbollist \
-    --report-file=abi_symbollist.report --in-dir="$ROOT_DIR/$KERNEL_DIR" \
-    "${KMI_SYMBOL_LIST}" ${ADDITIONAL_KMI_SYMBOL_LISTS}
+#if [ -n "${KMI_SYMBOL_LIST}" ]; then
+#  ${ROOT_DIR}/build/abi/process_symbols --out-dir="$DIST_DIR" --out-file=abi_symbollist \
+#    --report-file=abi_symbollist.report --in-dir="$ROOT_DIR/$KERNEL_DIR" \
+#    "${KMI_SYMBOL_LIST}" ${ADDITIONAL_KMI_SYMBOL_LISTS}
   pushd $ROOT_DIR/$KERNEL_DIR
-  if [ "${TRIM_NONLISTED_KMI}" = "1" ]; then
+#  if [ "${TRIM_NONLISTED_KMI}" = "1" ]; then
       # Create the raw symbol list
-      cat ${ABI_SL} | \
-              ${ROOT_DIR}/build/abi/flatten_symbol_list > \
-              ${OUT_DIR}/abi_symbollist.raw
+#      cat ${ABI_SL} | \
+#              ${ROOT_DIR}/build/abi/flatten_symbol_list > \
+#              ${OUT_DIR}/abi_symbollist.raw
 
       # Update the kernel configuration
-      ./scripts/config --file ${OUT_DIR}/.config \
-              -d UNUSED_SYMBOLS -e TRIM_UNUSED_KSYMS \
-              --set-str UNUSED_KSYMS_WHITELIST ${OUT_DIR}/abi_symbollist.raw
-      (cd ${OUT_DIR} && \
-              make O=${OUT_DIR} ${TOOL_ARGS} "${MAKE_ARGS[@]}" olddefconfig)
-      # Make sure the config is applied
-      grep CONFIG_UNUSED_KSYMS_WHITELIST ${OUT_DIR}/.config > /dev/null || {
-        echo "ERROR: Failed to apply TRIM_NONLISTED_KMI kernel configuration" >&2
-        echo "Does your kernel support CONFIG_UNUSED_KSYMS_WHITELIST?" >&2
-        exit 1
-      }
+#      ./scripts/config --file ${OUT_DIR}/.config \
+#              -d UNUSED_SYMBOLS -e TRIM_UNUSED_KSYMS \
+#              --set-str UNUSED_KSYMS_WHITELIST ${OUT_DIR}/abi_symbollist.raw
+#      (cd ${OUT_DIR} && \
+#              make O=${OUT_DIR} ${TOOL_ARGS} "${MAKE_ARGS[@]}" olddefconfig)
+#      # Make sure the config is applied
+#      grep CONFIG_UNUSED_KSYMS_WHITELIST ${OUT_DIR}/.config > /dev/null || {
+#        echo "ERROR: Failed to apply TRIM_NONLISTED_KMI kernel configuration" >&2
+#        echo "Does your kernel support CONFIG_UNUSED_KSYMS_WHITELIST?" >&2
+#        exit 1
+#      }
 
-    elif [ "${KMI_SYMBOL_LIST_STRICT_MODE}" = "1" ]; then
-      echo "ERROR: KMI_SYMBOL_LIST_STRICT_MODE requires TRIM_NONLISTED_KMI=1" >&2
-    exit 1
-  fi
+#    elif [ "${KMI_SYMBOL_LIST_STRICT_MODE}" = "1" ]; then
+#      echo "ERROR: KMI_SYMBOL_LIST_STRICT_MODE requires TRIM_NONLISTED_KMI=1" >&2
+#    exit 1
+#  fi
   popd # $ROOT_DIR/$KERNEL_DIR
 elif [ "${TRIM_NONLISTED_KMI}" = "1" ]; then
   echo "ERROR: TRIM_NONLISTED_KMI requires a KMI_SYMBOL_LIST" >&2
@@ -828,17 +828,17 @@ if [ -n "${MODULES_ORDER}" ]; then
   fi
 fi
 
-if [ "${KMI_SYMBOL_LIST_STRICT_MODE}" = "1" ]; then
+#if [ "${KMI_SYMBOL_LIST_STRICT_MODE}" = "1" ]; then
   echo "========================================================"
   echo " Comparing the KMI and the symbol lists:"
-  set -x
+#  set -x
 
-  gki_modules_list="${ROOT_DIR}/${KERNEL_DIR}/android/gki_system_dlkm_modules"
-  KMI_STRICT_MODE_OBJECTS="vmlinux $(sed 's/\.ko$//' ${gki_modules_list} | tr '\n' ' ')" \
-    ${ROOT_DIR}/build/abi/compare_to_symbol_list "${OUT_DIR}/Module.symvers"             \
-    "${OUT_DIR}/abi_symbollist.raw"
-  set +x
-fi
+#  gki_modules_list="${ROOT_DIR}/${KERNEL_DIR}/android/gki_system_dlkm_modules"
+#  KMI_STRICT_MODE_OBJECTS="vmlinux $(sed 's/\.ko$//' ${gki_modules_list} | tr '\n' ' ')" \
+#    ${ROOT_DIR}/build/abi/compare_to_symbol_list "${OUT_DIR}/Module.symvers"             \
+#    "${OUT_DIR}/abi_symbollist.raw"
+#  set +x
+#fi
 
 rm -rf ${MODULES_STAGING_DIR}
 mkdir -p ${MODULES_STAGING_DIR}
