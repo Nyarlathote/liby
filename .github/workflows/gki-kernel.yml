@@ -104,7 +104,8 @@ jobs:
           wget https://github.com/Nyarlathote/liby/raw/master/build.config.gki
           wget https://github.com/Nyarlathote/liby/raw/master/build.sh
           cp $GITHUB_WORKSPACE/android-kernel/build.config.gki $GITHUB_WORKSPACE/android-kernel/common/build.config.gki
-          cp $GITHUB_WORKSPACE/android-kernel/build.sh $GITHUB_WORKSPACE/android-kernel/build/build.sh     echo "CONFIG_MODULES=y" >> common/arch/arm64/configs/gki_defconfig
+          cp $GITHUB_WORKSPACE/android-kernel/build.sh $GITHUB_WORKSPACE/android-kernel/build/build.sh     
+            echo "CONFIG_MODULES=y" >> common/arch/arm64/configs/gki_defconfig
             echo "CONFIG_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
             echo "CONFIG_HAVE_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
             echo "CONFIG_KPROBE_EVENTS=y" >> common/arch/arm64/configs/gki_defconfig
