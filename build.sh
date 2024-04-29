@@ -746,7 +746,7 @@ ABI_PROP=${DIST_DIR}/abi.prop
 #if [ -n "${KMI_SYMBOL_LIST}" ]; then
 #  ABI_SL=${DIST_DIR}/abi_symbollist
 #  echo "KMI_SYMBOL_LIST=abi_symbollist" >> ${ABI_PROP}
-fi
+#fi
 
 # define the kernel binary and modules archive in the $ABI_PROP
 echo "KERNEL_BINARY=vmlinux" >> ${ABI_PROP}
