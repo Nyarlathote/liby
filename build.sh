@@ -793,13 +793,13 @@ fi
 #    exit 1
 #  fi
   popd # $ROOT_DIR/$KERNEL_DIR
-elif [ "${TRIM_NONLISTED_KMI}" = "1" ]; then
-  echo "ERROR: TRIM_NONLISTED_KMI requires a KMI_SYMBOL_LIST" >&2
-  exit 1
-elif [ "${KMI_SYMBOL_LIST_STRICT_MODE}" = "1" ]; then
-  echo "ERROR: KMI_SYMBOL_LIST_STRICT_MODE requires a KMI_SYMBOL_LIST" >&2
-  exit 1
-fi
+#elif [ "${TRIM_NONLISTED_KMI}" = "1" ]; then
+#  echo "ERROR: TRIM_NONLISTED_KMI requires a KMI_SYMBOL_LIST" >&2
+#  exit 1
+#elif [ "${KMI_SYMBOL_LIST_STRICT_MODE}" = "1" ]; then
+#  echo "ERROR: KMI_SYMBOL_LIST_STRICT_MODE requires a KMI_SYMBOL_LIST" >&2
+#  exit 1
+#fi
 
 echo "========================================================"
 echo " Building kernel"
