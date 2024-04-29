@@ -101,52 +101,52 @@ jobs:
       - name: Setup Configuration for Kernel
         run: |
           cd $GITHUB_WORKSPACE/android-kernel
-          wget https://github.com/MiCode/Xiaomi_Kernel_OpenSource/raw/sheng-u-oss/arch/arm64/configs/vendor/sheng_GKI.config
-          cp $GITHUB_WORKSPACE/android-kernel/sheng_GKI.config $GITHUB_WORKSPACE/android-kernel/common/arch/arm64/configs/sheng_defconfig
-            echo "CONFIG_MODULES=y" >> common/arch/arm64/configs/sheng_defconfig
-            echo "CONFIG_KPROBES=y" >> common/arch/arm64/configs/sheng_defconfig
-            echo "CONFIG_HAVE_KPROBES=y" >> common/arch/arm64/configs/sheng_defconfig
-            echo "CONFIG_KPROBE_EVENTS=y" >> common/arch/arm64/configs/sheng_defconfig
-            echo "CONFIG_OVERLAY_FS=y" >> common/arch/arm64/configs/sheng_defconfig
-            sed -i 's/CONFIG_LTO=y/CONFIG_LTO=n/' common/arch/arm64/configs/sheng_defconfig
-            sed -i 's/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/' common/arch/arm64/configs/sheng_defconfig
-            sed -i 's/CONFIG_THINLTO=y/CONFIG_THINLTO=n/' common/arch/arm64/configs/sheng_defconfig
-            echo "CONFIG_LTO_NONE=y" >> common/arch/arm64/configs/sheng_defconfig
-            echo "CONFIG_CC_WERROR=n" >> common/arch/arm64/configs/sheng_defconfig
+          wget https://github.com/Nyarlathote/liby/raw/master/build.config.gki
+          cp $GITHUB_WORKSPACE/android-kernel/build.config.gki $GITHUB_WORKSPACE/android-kernel/common/build.config.gki
+            echo "CONFIG_MODULES=y" >> common/arch/arm64/configs/gki_defconfig
+            echo "CONFIG_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
+            echo "CONFIG_HAVE_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
+            echo "CONFIG_KPROBE_EVENTS=y" >> common/arch/arm64/configs/gki_defconfig
+            echo "CONFIG_OVERLAY_FS=y" >> common/arch/arm64/configs/gki_defconfig
+            sed -i 's/CONFIG_LTO=y/CONFIG_LTO=n/' common/arch/arm64/configs/gki_defconfig
+            sed -i 's/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/' common/arch/arm64/configs/gki_defconfig
+            sed -i 's/CONFIG_THINLTO=y/CONFIG_THINLTO=n/' common/arch/arm64/configs/gki_defconfig
+            echo "CONFIG_LTO_NONE=y" >> common/arch/arm64/configs/gki_defconfig
+            echo "CONFIG_CC_WERROR=n" >> common/arch/arm64/configs/gki_defconfig
 
                   
       - name: Setup LXC
         run: |
-          cd $GITHUB_WORKSPACE/android-kernel
-          rm -rf utils
-          wget https://github.com/Nyarlathote/liby/raw/master/_setup_env.sh
-          git clone https://github.com/tomxi1997/lxc-docker-support-for-android.git utils
-          echo 'source "utils/Kconfig"' >> "Kconfig"
+#         cd $GITHUB_WORKSPACE/android-kernel
+#          rm -rf utils
+#          wget https://github.com/Nyarlathote/liby/raw/master/_setup_env.sh
+#          git clone https://github.com/tomxi1997/lxc-docker-support-for-android.git utils
+#          echo 'source "utils/Kconfig"' >> "Kconfig"
 
-          echo "CONFIG_DOCKER=y" >> echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/sheng_defconfig
+#          echo "CONFIG_DOCKER=y" >> echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/gki_defconfig
 
-          sed -i '/CONFIG_ANDROID_PARANOID_NETWORK/d' common/arch/arm64/configs/sheng_defconfig
-          echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/sheng_defconfig
+#          sed -i '/CONFIG_ANDROID_PARANOID_NETWORK/d' common/arch/arm64/configs/gki_defconfig
+#          echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> common/arch/arm64/configs/gki_defconfig
           
-          #sed -i '/CONFIG_LOCALVERSION/d' common/arch/arm64/configs/sheng_defconfig
-          #echo 'CONFIG_LOCALVERSION="-LXC-KernelSU-support_Pdx"' >> common/arch/arm64/configs/sheng_defconfig
+          #sed -i '/CONFIG_LOCALVERSION/d' common/arch/arm64/configs/gki_defconfig
+          #echo 'CONFIG_LOCALVERSION="-LXC-KernelSU-support_Pdx"' >> common/arch/arm64/configs/gki_defconfig
           
-          chmod +x $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh
-          if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c ]; then
-             sh $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c
-          fi
+#          chmod +x $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh
+#          if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c ]; then
+#             sh $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/android-kernel/kernel/cgroup/cgroup.c
+#          fi
       
-          if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup.c ]; then
-             sh $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/android-kernel/kernel/cgroup.c
-          fi
+#          if [ -f $GITHUB_WORKSPACE/android-kernel/kernel/cgroup.c ]; then
+#             sh $GITHUB_WORKSPACE/android-kernel/utils/runcpatch.sh $GITHUB_WORKSPACE/android-kernel/kernel/cgroup.c
+#          fi
           
-          if [ -f $GITHUB_WORKSPACE/android-kernel/net/netfilter/xt_qtaguid.c ]; then
-             patch -p0 < $GITHUB_WORKSPACE/android-kernel/utils/xt_qtaguid.patch
-          fi
+#          if [ -f $GITHUB_WORKSPACE/android-kernel/net/netfilter/xt_qtaguid.c ]; then
+#             patch -p0 < $GITHUB_WORKSPACE/android-kernel/utils/xt_qtaguid.patch
+#          fi
 
-          if [ -f common/arch/arm64/configs/sheng_defconfig ]; then
-             cp $GITHUB_WORKSPACE/android-kernel/_setup_env.sh $GITHUB_WORKSPACE/android-kernel/build/_setup_env.sh
-          fi
+#          if [ -f common/arch/arm64/configs/gki_defconfig ]; then
+#             cp $GITHUB_WORKSPACE/android-kernel/_setup_env.sh $GITHUB_WORKSPACE/android-kernel/build/_setup_env.sh
+#          fi
           
       - name: Setup ccache
         if: inputs.use_cache == true
@@ -159,15 +159,7 @@ jobs:
       - name: Build Kernel/LKM
         working-directory: android-kernel
         run: |
-          sudo apt-get install lld
-          sudo rm /usr/bin/ld
-          sudo ln -s /usr/bin/ld.lld /usr/bin/ld
-          cd common
-          make LLVM=1 DEPMOD=depmod DTC=/home/runner/work/liby/liby/android-kernel/build/kernel/build-tools/path/linux-x86/dtc O=/home/runner/work/liby/liby/android-kernel/out/android13-5.15/common 'CC=/usr/bin/ccache clang' sheng_defconfig
-          cd /home/runner/work/liby/liby/android-kernel/out/android13-5.15/common
-          make O=/home/runner/work/liby/liby/android-kernel/out/android13-5.15/common LLVM=1 DEPMOD=depmod DTC=/home/runner/work/liby/liby/android-kernel/build/kernel/build-tools/path/linux-x86/dtc 'CC=/usr/bin/ccache clang' Image modules Image.lz4 Image.gz 
-          cd /home/runner/work/liby/liby/android-kernel/out/android13-5.15/common
-          make Image modules Image.lz4 Image.gz
+          LTO=thin BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC="/usr/bin/ccache clang"
           
 
       - name: Prepare artifacts
