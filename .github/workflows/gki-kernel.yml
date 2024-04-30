@@ -105,24 +105,24 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/android-kernel
           wget https://github.com/Nyarlathote/liby/raw/master/build.config.gki
-#          wget https://github.com/Nyarlathote/liby/raw/master/build.sh
-#          wget https://github.com/Nyarlathote/liby/raw/master/gki_defconfig
-#          git fetch https://github.com/cyberknight777/android_kernel_docker main
-#          git merge -s ours --no-commit --allow-unrelated-histories --squash FETCH_HEAD
-#          git read-tree --prefix=docker -u FETCH_HEAD
-#          git commit -m "Imported docker/ from https://github.com/cyberknight777/android_kernel_docker"
-#          cp $GITHUB_WORKSPACE/android-kernel/build.sh $GITHUB_WORKSPACE/android-kernel/build/build.sh
-#          echo "source "docker/Kconfig"" >> common/arch/arm64/Kconfig
-#          cp $GITHUB_WORKSPACE/android-kernel/gki_defconfig $GITHUB_WORKSPACE/android-kernel/common/arch/arm64/configs/gki_defconfig
+          #wget https://github.com/Nyarlathote/liby/raw/master/build.sh
+          #wget https://github.com/Nyarlathote/liby/raw/master/gki_defconfig
+          #git fetch https://github.com/cyberknight777/android_kernel_docker main
+          #git merge -s ours --no-commit --allow-unrelated-histories --squash FETCH_HEAD
+          #git read-tree --prefix=docker -u FETCH_HEAD
+          #git commit -m "Imported docker/ from https://github.com/cyberknight777/android_kernel_docker"
+          #cp $GITHUB_WORKSPACE/android-kernel/build.sh $GITHUB_WORKSPACE/android-kernel/build/build.sh
+          #echo "source "docker/Kconfig"" >> common/arch/arm64/Kconfig
+          #cp $GITHUB_WORKSPACE/android-kernel/gki_defconfig $GITHUB_WORKSPACE/android-kernel/common/arch/arm64/configs/gki_defconfig
             echo "CONFIG_MODULES=y" >> common/arch/arm64/configs/gki_defconfig
             echo "CONFIG_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
-#            echo "CONFIG_HAVE_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
-#            echo "CONFIG_KPROBE_EVENTS=y" >> common/arch/arm64/configs/gki_defconfig
+          ##  echo "CONFIG_HAVE_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
+          #  echo "CONFIG_KPROBE_EVENTS=y" >> common/arch/arm64/configs/gki_defconfig
             echo "CONFIG_OVERLAY_FS=y" >> common/arch/arm64/configs/gki_defconfig
-#            sed -i 's/CONFIG_LTO=y/CONFIG_LTO=n/' common/arch/arm64/configs/gki_defconfig
-#            sed -i 's/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/' common/arch/arm64/configs/gki_defconfig
-#            sed -i 's/CONFIG_THINLTO=y/CONFIG_THINLTO=n/' common/arch/arm64/configs/gki_defconfig
-#            echo "CONFIG_LTO_NONE=y" >> common/arch/arm64/configs/gki_defconfig
+          #  sed -i 's/CONFIG_LTO=y/CONFIG_LTO=n/' common/arch/arm64/configs/gki_defconfig
+          #  sed -i 's/CONFIG_LTO_CLANG=y/CONFIG_LTO_CLANG=n/' common/arch/arm64/configs/gki_defconfig
+          #  sed -i 's/CONFIG_THINLTO=y/CONFIG_THINLTO=n/' common/arch/arm64/configs/gki_defconfig
+          #  echo "CONFIG_LTO_NONE=y" >> common/arch/arm64/configs/gki_defconfig
             echo "CONFIG_CC_WERROR=n" >> common/arch/arm64/configs/gki_defconfig
             cp $GITHUB_WORKSPACE/android-kernel/build.config.gki $GITHUB_WORKSPACE/android-kernel/common/build.config.gki
                   
