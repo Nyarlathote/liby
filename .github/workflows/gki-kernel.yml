@@ -62,6 +62,10 @@ on:
         required: false
       MESSAGE_THREAD_ID:
         required: false  
+        
+permissions:
+  contents: write
+  
 jobs:
   build:
     name: Build ${{ inputs.version_name }}
