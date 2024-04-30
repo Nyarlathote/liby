@@ -104,7 +104,7 @@ jobs:
       - name: Setup Configuration for Kernel
         run: |
           cd $GITHUB_WORKSPACE/android-kernel
-          #wget https://github.com/Nyarlathote/liby/raw/master/build.config.gki
+          wget https://github.com/Nyarlathote/liby/raw/master/build.config.gki
           #wget https://github.com/Nyarlathote/liby/raw/master/build.sh
           #wget https://github.com/Nyarlathote/liby/raw/master/gki_defconfig
           #git fetch https://github.com/cyberknight777/android_kernel_docker main
@@ -122,7 +122,7 @@ jobs:
           #  sed -i 's/CONFIG_THINLTO=y/CONFIG_THINLTO=n/' common/arch/arm64/configs/gki_defconfig
           #  echo "CONFIG_LTO_NONE=y" >> common/arch/arm64/configs/gki_defconfig
           #  echo "CONFIG_CC_WERROR=n" >> common/arch/arm64/configs/gki_defconfig
-          #  cp $GITHUB_WORKSPACE/android-kernel/build.config.gki $GITHUB_WORKSPACE/android-kernel/common/build.config.gki
+            cp $GITHUB_WORKSPACE/android-kernel/build.config.gki $GITHUB_WORKSPACE/android-kernel/common/build.config.gki
           echo "CONFIG_NAMESPACES" >> common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_UTS_NS" >> common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_IPC_NS" >> common/arch/arm64/configs/gki_defconfig
