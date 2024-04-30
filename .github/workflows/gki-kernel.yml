@@ -107,12 +107,12 @@ jobs:
           wget https://github.com/Nyarlathote/liby/raw/master/build.config.gki
           #wget https://github.com/Nyarlathote/liby/raw/master/build.sh
           #wget https://github.com/Nyarlathote/liby/raw/master/gki_defconfig
-          #git fetch https://github.com/cyberknight777/android_kernel_docker main
-          #git merge -s ours --no-commit --allow-unrelated-histories --squash FETCH_HEAD
-          #git read-tree --prefix=docker -u FETCH_HEAD
-          #git commit -m "Imported docker/ from https://github.com/cyberknight777/android_kernel_docker"
+          git fetch https://github.com/cyberknight777/android_kernel_docker main
+          git merge -s ours --no-commit --allow-unrelated-histories --squash FETCH_HEAD
+          git read-tree --prefix=docker -u FETCH_HEAD
+          git commit -m "Imported docker/ from https://github.com/cyberknight777/android_kernel_docker"
           #cp $GITHUB_WORKSPACE/android-kernel/build.sh $GITHUB_WORKSPACE/android-kernel/build/build.sh
-          #echo "source "docker/Kconfig"" >> common/arch/arm64/Kconfig
+          echo "source "docker/Kconfig"" >> common/arch/arm64/Kconfig
           #cp $GITHUB_WORKSPACE/android-kernel/gki_defconfig $GITHUB_WORKSPACE/android-kernel/common/arch/arm64/configs/gki_defconfig
           ##  echo "CONFIG_HAVE_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
           #  echo "CONFIG_KPROBE_EVENTS=y" >> common/arch/arm64/configs/gki_defconfig
@@ -123,30 +123,30 @@ jobs:
           #  echo "CONFIG_LTO_NONE=y" >> common/arch/arm64/configs/gki_defconfig
           #  echo "CONFIG_CC_WERROR=n" >> common/arch/arm64/configs/gki_defconfig
             cp $GITHUB_WORKSPACE/android-kernel/build.config.gki $GITHUB_WORKSPACE/android-kernel/common/build.config.gki
-          echo "CONFIG_NAMESPACES=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_UTS_NS=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_IPC_NS=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_PID_NS=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NET_NS=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_CGROUPS=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_CGROUP_CPUACCT=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_CGROUP_DEVICE=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_CGROUP_FREEZER=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_CGROUP_PERF=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_CGROUP_PIDS=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_CGROUP_SCHED=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_CPUSETS=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_MEMCG=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_KEYS=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_VETH=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_BRIDGE=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_BRIDGE_NETFILTER=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NF_NAT_IPV4=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_IP_NF_FILTER=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_IP_NF_TARGET_MASQUERADE=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NETFILTER_XT_TARGET_DSCP=y" >> common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_NETFILTER_XT_TARGET_MARK=y" >> common/arch/arm64/configs/gki_defconfig     
+          #echo "CONFIG_NAMESPACES=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_UTS_NS=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_IPC_NS=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_PID_NS=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_NET_NS=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_CGROUPS=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_CGROUP_CPUACCT=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_CGROUP_DEVICE=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_CGROUP_FREEZER=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_CGROUP_PERF=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_CGROUP_PIDS=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_CGROUP_SCHED=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_CPUSETS=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_MEMCG=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_KEYS=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_VETH=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_BRIDGE=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_BRIDGE_NETFILTER=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_NF_NAT_IPV4=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_IP_NF_FILTER=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_IP_NF_TARGET_MASQUERADE=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_NETFILTER_XT_TARGET_DSCP=y" >> common/arch/arm64/configs/gki_defconfig
+          #echo "CONFIG_NETFILTER_XT_TARGET_MARK=y" >> common/arch/arm64/configs/gki_defconfig     
           
       - name: Setup LXC
         run: |
