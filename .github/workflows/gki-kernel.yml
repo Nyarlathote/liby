@@ -63,8 +63,6 @@ on:
       MESSAGE_THREAD_ID:
         required: false  
         
-permissions:
-  contents: write
   
 jobs:
   build:
