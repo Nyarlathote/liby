@@ -103,7 +103,7 @@ jobs:
           
       - name: Setup Configuration for Kernel
         run: |
-          cd $GITHUB_WORKSPACE/android-kernel
+          #cd $GITHUB_WORKSPACE/android-kernel
           wget https://github.com/Nyarlathote/liby/raw/master/build.config.gki
           #wget https://github.com/Nyarlathote/liby/raw/master/build.sh
           #wget https://github.com/Nyarlathote/liby/raw/master/gki_defconfig
