@@ -106,14 +106,14 @@ jobs:
           cd $GITHUB_WORKSPACE/android-kernel
           #wget https://github.com/Nyarlathote/liby/raw/master/build.config.gki
           #wget https://github.com/Nyarlathote/liby/raw/master/build.sh
-          wget https://github.com/Nyarlathote/liby/raw/master/gki_defconfig
+          #wget https://github.com/Nyarlathote/liby/raw/master/gki_defconfig
           #git fetch https://github.com/cyberknight777/android_kernel_docker main
           #git merge -s ours --no-commit --allow-unrelated-histories --squash FETCH_HEAD
           #git read-tree --prefix=docker -u FETCH_HEAD
           #git commit -m "Imported docker/ from https://github.com/cyberknight777/android_kernel_docker"
           #cp $GITHUB_WORKSPACE/android-kernel/build.sh $GITHUB_WORKSPACE/android-kernel/build/build.sh
           #echo "source "docker/Kconfig"" >> common/arch/arm64/Kconfig
-          cp $GITHUB_WORKSPACE/android-kernel/gki_defconfig $GITHUB_WORKSPACE/android-kernel/common/arch/arm64/configs/gki_defconfig
+          #cp $GITHUB_WORKSPACE/android-kernel/gki_defconfig $GITHUB_WORKSPACE/android-kernel/common/arch/arm64/configs/gki_defconfig
           ##  echo "CONFIG_HAVE_KPROBES=y" >> common/arch/arm64/configs/gki_defconfig
           #  echo "CONFIG_KPROBE_EVENTS=y" >> common/arch/arm64/configs/gki_defconfig
           # echo "CONFIG_OVERLAY_FS=y" >> common/arch/arm64/configs/gki_defconfig
@@ -123,7 +123,31 @@ jobs:
           #  echo "CONFIG_LTO_NONE=y" >> common/arch/arm64/configs/gki_defconfig
           #  echo "CONFIG_CC_WERROR=n" >> common/arch/arm64/configs/gki_defconfig
           #  cp $GITHUB_WORKSPACE/android-kernel/build.config.gki $GITHUB_WORKSPACE/android-kernel/common/build.config.gki
-                  
+          echo "CONFIG_NAMESPACES" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_UTS_NS" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_IPC_NS" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_PID_NS" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_NET_NS" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CGROUPS" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CGROUP_CPUACCT" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CGROUP_DEVICE" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CGROUP_FREEZER" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CGROUP_PERF" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CGROUP_PIDS" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CGROUP_SCHED" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CPUSETS" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_MEMCG" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_KEYS" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_VETH" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_BRIDGE" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_BRIDGE_NETFILTER" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_NF_NAT_IPV4" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_IP_NF_FILTER" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_IP_NF_TARGET_MASQUERADE" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_NETFILTER_XT_MATCH_ADDRTYPE" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_NETFILTER_XT_TARGET_DSCP" >> common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_NETFILTER_XT_TARGET_MARK" >> common/arch/arm64/configs/gki_defconfig     
+          
       - name: Setup LXC
         run: |
 #         cd $GITHUB_WORKSPACE/android-kernel
