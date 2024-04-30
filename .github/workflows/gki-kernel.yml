@@ -100,6 +100,7 @@ jobs:
           repo --version
           repo --trace sync -c -j$(nproc --all) --no-tags
           df -h
+          
       - name: Setup Configuration for Kernel
         run: |
           cd $GITHUB_WORKSPACE/android-kernel
@@ -110,7 +111,6 @@ jobs:
 #          git merge -s ours --no-commit --allow-unrelated-histories --squash FETCH_HEAD
 #          git read-tree --prefix=docker -u FETCH_HEAD
 #          git commit -m "Imported docker/ from https://github.com/cyberknight777/android_kernel_docker"
-          cp $GITHUB_WORKSPACE/android-kernel/build.config.gki $GITHUB_WORKSPACE/android-kernel/common/build.config.gki
 #          cp $GITHUB_WORKSPACE/android-kernel/build.sh $GITHUB_WORKSPACE/android-kernel/build/build.sh
 #          echo "source "docker/Kconfig"" >> common/arch/arm64/Kconfig
 #          cp $GITHUB_WORKSPACE/android-kernel/gki_defconfig $GITHUB_WORKSPACE/android-kernel/common/arch/arm64/configs/gki_defconfig
@@ -124,7 +124,7 @@ jobs:
 #            sed -i 's/CONFIG_THINLTO=y/CONFIG_THINLTO=n/' common/arch/arm64/configs/gki_defconfig
 #            echo "CONFIG_LTO_NONE=y" >> common/arch/arm64/configs/gki_defconfig
             echo "CONFIG_CC_WERROR=n" >> common/arch/arm64/configs/gki_defconfig
-
+            cp $GITHUB_WORKSPACE/android-kernel/build.config.gki $GITHUB_WORKSPACE/android-kernel/common/build.config.gki
                   
       - name: Setup LXC
         run: |
